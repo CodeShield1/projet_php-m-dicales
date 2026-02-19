@@ -106,19 +106,47 @@
     }
 
 
-   
+    function calcul_age($date_naissance)
+    {
+        $naissance = new DateTime($date_naissance);
+        $today = new DateTime();
 
-function calcul_age($date_naissance)
+        $age = $today->diff($naissance);
+
+        return $age->y;
+    }
+
+
+    function calcul_imc($poids, $taille)
+    {
+        if ($taille <= 0) {
+            return "Taille invalide";
+        }
+
+        $imc = $poids / ($taille * $taille);
+
+        return round($imc, 2);
+    }
+
+    
+    function classifier_temperature($temperature)
 {
-    $timestamp_naissance = strtotime($date_naissance);
+    $ranges = [
+        ["min" => -100, "max" => 34.9, "etat" => "Hypothermie - Danger"],
+        ["min" => 35,   "max" => 37.4, "etat" => "Température normale"],
+        ["min" => 37.5, "max" => 37.9, "etat" => "Élévation légère"],
+        ["min" => 38,   "max" => 38.9, "etat" => "Fièvre"],
+        ["min" => 39,   "max" => 40,   "etat" => "Fièvre élevée - Risque"],
+        ["min" => 41,   "max" => 42,   "etat" => "Hyperthermie dangereuse"],
+    ];
 
-    $timestamp_today = strtotime(date("Y-m-d"));
+    foreach ($ranges as $range) {
+        if ($temperature >= $range["min"] && $temperature <= $range["max"]) {
+            return $range["etat"];
+        }
+    }
 
-    $difference = $timestamp_today - $timestamp_naissance;
-
-    $age = floor($difference / (365 * 24 * 60 * 60));
-
-    return $age;
+    return "Valeur non médicale";
 }
 
 
@@ -135,15 +163,6 @@ function calcul_age($date_naissance)
 
 
 
-//  function calcul_age($date_naissance){
-//     $date_naiss = new DateTime($date_naissance);
-
-//     $today = new DateTime();
-
-//     $difference = $today->diff($date_naiss);
-
-//     return $difference->y;
-// }
 
 
 
