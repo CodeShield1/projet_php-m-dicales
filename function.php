@@ -1,9 +1,9 @@
 <?php
 
-    function val_champs_obligatoires($data){
-    $erreurs = [];
+    function val_champs_obligatoires($data) {
+        $erreurs = [];
 
-        $champes = [
+        $champs = [
             'nom',
             'prenom',
             'date_naissance',
@@ -17,23 +17,24 @@
             'tension_systolique',
             'tension_diastolique',
         ];
-        foreach ($champes as $champ) {
-            if(!isset($data[$champ])||trim($data[$champ])== ''){
-            $erreurs[$champ] = 'veuillez remplir le champ';
+        
+        foreach ($champs as $champ) {
+            if (!isset($data[$champ]) || trim($data[$champ]) == '') {
+                $erreurs[$champ] = 'Veuillez remplir le champ';
             }
-
-        }if(!isset($data['Symptomes'])){
-            $erreurs['Symptomes']='Veuillze choiser au moins un symptome';
         }
-
+        
+        if (!isset($data['Symptomes'])) {
+            $erreurs['Symptomes'] = 'Veuillez choisir au moins un symptôme';
+        }
+        
+        return $erreurs;
     }
 
-    function valider_mesures_Numb($data, $mesures)
-    {
+    function val_mesures_Numb($data, $mesures) {
         $erreur = [];
 
         foreach ($mesures as $key => $config) {
-
             $value = $data[$key] ?? null;
 
             if (!is_numeric($value)) {
@@ -56,7 +57,6 @@
 
         return $erreur;
     }
-
 
     $mesures = [
         "temperature" => [
@@ -87,10 +87,88 @@
     ];
 
 
-// $mesures = [
-//   "temperature" => [
-//      "label" => "Température",
-//       "min" => 35, 
-//       "max" => 42 ],
+    function val_date_consultation($data)
+    {
+        $erreurs = [];
+
+        $date = $data['date_consultation'];
+
+        $date_consultation = strtotime($date);
+        $today = strtotime(date("Y-m-d"));
+
+        if ($date_consultation === false) {
+            $erreurs['date_consultation'] = "Format de date invalide";
+        } elseif ($date_consultation > $today) {
+            $erreurs['date_consultation'] = "La date ne peut pas être dans le futur";
+        }
+
+        return $erreurs;
+    }
+
+
+   
+
+function calcul_age($date_naissance)
+{
+    $timestamp_naissance = strtotime($date_naissance);
+
+    $timestamp_today = strtotime(date("Y-m-d"));
+
+    $difference = $timestamp_today - $timestamp_naissance;
+
+    $age = floor($difference / (365 * 24 * 60 * 60));
+
+    return $age;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//  function calcul_age($date_naissance){
+//     $date_naiss = new DateTime($date_naissance);
+
+//     $today = new DateTime();
+
+//     $difference = $today->diff($date_naiss);
+
+//     return $difference->y;
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function generer_erreurs($data, $mesures)
+// {
+//     $erreurs = [];
+
+//     $erreurs = array_merge(
+//         val_champs_obligatoires($data),
+//         valider_mesures_Numb($data, $mesures),
+//         valider_date_consultation($data)
+//     );
+
+//     return $erreurs;
+// }
+
 
 ?>
