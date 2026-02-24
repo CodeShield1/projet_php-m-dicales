@@ -63,7 +63,7 @@ if (empty($consultations)) {
     foreach ($consultations as $consultation) {
         echo "<tr>";
         echo "<td>" . htmlspecialchars($consultation["id"]) . "</td>";
-        // Correction: ajout espace bin nom w prenom
+
         echo "<td>" . htmlspecialchars($consultation["nom"] . " " . $consultation["prenom"]) . "</td>";
         echo "<td>" . htmlspecialchars($consultation["sexe"]) . "</td>";
         echo "<td>" . htmlspecialchars($consultation["age"]) . "</td>";
@@ -71,13 +71,12 @@ if (empty($consultations)) {
         echo "<td>" . htmlspecialchars($consultation["date_consultation"]) . "</td>";
         echo "<td>" . htmlspecialchars($consultation["motif"]) . "</td>";
         
-        // Verification bach ma yghltch ila kan tableau fakhya
-        $temp_val = $consultation["temperature"]["temp"] ?? 'N/A';
-        $temp_etat = $consultation["temperature"]["etat"] ?? '';
+        $temp_val = $consultation["temperature"]["temp"] ;
+        $temp_etat = $consultation["temperature"]["etat"] ;
         echo "<td>" . $temp_etat . " / " . $temp_val . "</td>";
         
-        $tension_sys = $consultation["tension"]["sys"] ?? 'N/A';
-        $tension_dia = $consultation["tension"]["dia"] ?? 'N/A';
+        $tension_sys = $consultation["tension"]["sys"] ;
+        $tension_dia = $consultation["tension"]["dia"] ;
         echo "<td>" . $tension_sys . " / " . $tension_dia . "</td>";
         
         echo "<td>" . htmlspecialchars($consultation["poids"]) . "</td>";
