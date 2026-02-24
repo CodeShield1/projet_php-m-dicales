@@ -74,7 +74,7 @@
 new TomSelect("select[name='symptomes[]']", {
     plugins: ['remove_button'],
     placeholder: "Choisir les symptômes...",
-    maxItems: null, // بلا limit
+    maxItems: null, 
     hideSelected: true
 });
 </script>

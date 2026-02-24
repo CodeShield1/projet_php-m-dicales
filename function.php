@@ -1,5 +1,5 @@
 ﻿<?php
-
+define("DATA_FILE","data/consultation.json");
 function val_champs_obligatoires($data) {
     $erreurs = [];
 
@@ -113,7 +113,6 @@ function calcul_age($date_naissance) {
 }
 
 function calcul_imc($poids, $taille) {
-    if ($taille <= 0) return 0;
     $imc = $poids / ($taille * $taille);
     return round($imc, 2);
 }
@@ -125,7 +124,6 @@ function classifier_temperature($temperature) {
         ["min" => 38,   "max" => 38.9, "etat" => "Fièvre",                       "level" => 3],
         ["min" => 37.5, "max" => 37.9, "etat" => "Élévation légère",             "level" => 2],
         ["min" => 35,   "max" => 37.4, "etat" => "Température normale",          "level" => 0],
-        ["min" => -100, "max" => 34.9, "etat" => "Hypothermie - Danger",         "level" => 4],
     ];
 
     foreach ($ranges as $range) {
@@ -162,12 +160,12 @@ function classifier_tension($sys, $dia) {
         }
     }
 
-    return ["etat" => "Tension normale", "level" => 0];
+    return ["etat" => "Tension normale"];
 }
 
 function classifier_imc($imc) {
     $ranges = [
-        ["min" => 40,    "max" => INF,   "etat" => "Obésité morbide",          "level" => 5],
+        ["min" => 40,    "max" => 50,   "etat" => "Obésité morbide",          "level" => 5],
         ["min" => 35,    "max" => 39.9,  "etat" => "Obésité sévère (classe 2)", "level" => 4],
         ["min" => 30,    "max" => 34.9,  "etat" => "Obésité modérée (classe 1)", "level" => 3],
         ["min" => 25,    "max" => 29.9,  "etat" => "Surpoids",                  "level" => 2],
@@ -190,10 +188,26 @@ function classifier_imc($imc) {
 }
 
 
-function generer(){
-    
-}
+function generer_id_patient(){
+    return "PAT-".date("Ymd")."-".rand(1000,9999);
 
+};
+
+
+
+function get_consultation(){
+    if(!file_exists(DATA_FILE)){
+        return[];
+    } 
+    $data=file_get_contents(DATA_FILE);
+    if(empty($data)){
+        return[];
+    }
+    $consultation=json_decode($data,true);
+    return $consultation;
+    
+
+};
 
 
 function generer_alerte($temp_result, $tension_result, $imc_result) {
