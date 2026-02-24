@@ -98,6 +98,9 @@
                     <th>Poids</th>
                     <th>Taille</th>
                     <th>Symptômes</th>
+                    <th>ALERT</th>
+                    
+
                 </tr>
               </thead>";
         echo "<tbody>";
@@ -125,6 +128,8 @@
             echo "<td>" . htmlspecialchars($c["poids"]) . " kg</td>";
             echo "<td>" . htmlspecialchars($c["taille"]) . " m</td>";
             echo "<td>{$symptomes}</td>";
+            echo "<td>" . htmlspecialchars($c["alert"]) . " m</td>";
+
             echo "</tr>";
         }
         
